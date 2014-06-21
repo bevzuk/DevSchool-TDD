@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model Web.Models.RollDiceGameViewModel
+
+
+
+<h1>Roll Dice Game</h1>
+
+@Html.LabelFor(m => m.Chips)
+
+@using (Html.BeginForm("Play", "Home", FormMethod.Post)) {
+    @Html.LabelFor(m => m.Score)
+    @Html.TextBoxFor(m => m.Score)
+    <input type="submit" class="btn btn-default" value="Play" />
+}
