@@ -1,13 +1,16 @@
-﻿using System.ComponentModel;
+﻿#region Usings
+
 using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace Web.Models {
     public class RollDiceGameViewModel {
         [Required]
-        [Display(Name = "Make your bet on")]
+        [Display(Name = "On score:")]
         public int Score { get; set; }
 
-        [Display(Name = "Your balance:")]
+        [Display(Name = "Bet amount:")]
         public int Chips { get; set; }
     }
 }

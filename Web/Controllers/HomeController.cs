@@ -14,13 +14,18 @@ namespace Web.Controllers {
             return View();
         }
 
+        public ActionResult Play() {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Play(RollDiceGameViewModel viewModel) {
             var game = new RollDiceGame {Player = player};
             player.BuyChips(100);
-            player.Bet(1, viewModel.Score);
+            player.Bet(viewModel.Chips, viewModel.Score);
             game.Play();
-            viewModel.Chips = player.Chips;
+
+            ViewBag.Chips = player.Chips;
             return View(viewModel);
         }
 
