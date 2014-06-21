@@ -1,8 +1,6 @@
 ﻿#region Usings
 
 using System;
-using System.Linq;
-using System.Text;
 using Domain;
 using NUnit.Framework;
 
@@ -31,22 +29,22 @@ namespace Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof (ArgumentException))]
         public void PlayerCanNotBuyNegativeChips() {
             var player = new Player();
 
             player.BuyChips(-100);
         }
- 
+
         [Test]
         public void PlayerCanMakeBet() {
             var player = new Player();
 
             player.BuyChips(100);
-            player.Bet(chips: 100, score: 1);
+            player.Bet(100, 1);
 
-            Assert.AreEqual(100, player.Bets.Single().Chips);
-            Assert.AreEqual(1, player.Bets.Single().Score);
+            Assert.AreEqual(100, player.CurrentBet.Chips);
+            Assert.AreEqual(1, player.CurrentBet.Score);
         }
 
         [Test]
@@ -54,52 +52,29 @@ namespace Tests {
             var player = new Player();
 
             player.BuyChips(100);
-            player.Bet(chips: 25, score: 1);
+            player.Bet(25, 1);
 
             Assert.AreEqual(100 - 25, player.Chips);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof (ArgumentException))]
         public void PlayerCanNotBetMoreThanHeHasChips() {
             var player = new Player();
 
             player.BuyChips(100);
 
-            player.Bet(chips: 101, score: 1);
-        }
-
-        [Test]
-        public void PlayerCanMakeAnotherBet() {
-            var player = new Player();
-
-            player.BuyChips(100);
-            player.Bet(chips: 25, score: 1);
-            player.Bet(chips: 30, score: 1);
-
-            Assert.AreEqual(100 - 25 - 30, player.Chips);
-        }
-
-        [Test]
-        public void PlayerHasAnotherBet() {
-            var player = new Player();
-
-            player.BuyChips(100);
-            player.Bet(chips: 25, score: 1);
-            player.Bet(chips: 30, score: 2);
-
-            CollectionAssert.AreEquivalent(new [] {new Bet(25, 1), new Bet(30, 2)}, player.Bets);
+            player.Bet(101, 1);
         }
 
         [Test]
         public void PlayerCanLose() {
             var player = new Player();
             player.BuyChips(100);
-            player.Bet(chips: 25, score: 1);
+            player.Bet(25, 1);
 
             player.Lose();
 
-            CollectionAssert.AreEquivalent(new Bet[] {}, player.Bets);
             Assert.AreEqual(100 - 25, player.Chips);
         }
 
@@ -107,12 +82,48 @@ namespace Tests {
         public void PlayerCanWin() {
             var player = new Player();
             player.BuyChips(100);
-            player.Bet(chips: 25, score: 1);
+            player.Bet(25, 1);
 
             player.Win(200);
 
-            CollectionAssert.AreEquivalent(new Bet[] {}, player.Bets);
             Assert.AreEqual(100 - 25 + 200, player.Chips);
+        }
+
+        [Test]
+        public void PlayerCanJoinGame() {
+            var game = new RollDiceGame();
+            var player = new Player();
+
+            player.Join(game);
+
+            Assert.AreEqual(player, game.Player);
+        }
+
+        [Test]
+        public void PlayerCanPlayAndLose() {
+            var game = new RollDiceGame();
+            var player = new Player();
+            player.BuyChips(100);
+            player.Join(game);
+            player.Bet(100, 1);
+
+            game.Play();
+
+            Assert.AreEqual(0, player.Chips);
+        }
+
+
+        [Test]
+        public void PlayerCanPlayAndWin() {
+            var game = new RollDiceGame();
+            var player = new Player();
+            player.BuyChips(100);
+            player.Join(game);
+            player.Bet(100, 1);
+
+            game.Play();
+
+            Assert.AreEqual(100 - 100 + 100 * 6, player.Chips);
         }
     }
 }

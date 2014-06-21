@@ -1,14 +1,14 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
+
+#endregion
 
 namespace Domain {
     public class Player {
-        private readonly List<Bet> bets = new List<Bet>();
-
-        public IList<Bet> Bets {
-            get { return bets.AsReadOnly(); }
-        }
+        public Bet CurrentBet { get; private set; }
 
         public void BuyChips(int chips) {
             if (chips < 0) {
@@ -25,16 +25,20 @@ namespace Domain {
             }
 
             Chips -= chips;
-            bets.Add(new Bet(chips, score));
+            CurrentBet = new Bet(chips, score);
         }
 
         public void Lose() {
-            bets.Clear();
+            CurrentBet = null;
         }
 
         public void Win(int chips) {
             Chips += chips;
-            bets.Clear();
+            CurrentBet = null;
+        }
+
+        public void Join(RollDiceGame game) {
+            game.Player = this;
         }
     }
 }
