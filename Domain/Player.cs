@@ -1,10 +1,4 @@
-﻿#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-#endregion
+﻿using System;
 
 namespace Domain {
     public class Player {
@@ -39,6 +33,10 @@ namespace Domain {
 
         public void Join(RollDiceGame game) {
             game.Player = this;
+        }
+
+        public void Leave(RollDiceGame game) {
+            game.Player = null;
         }
     }
 }
