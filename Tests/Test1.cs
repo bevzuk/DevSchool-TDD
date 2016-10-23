@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Domain;
+using NUnit.Framework;
 
 namespace Tests
 {
@@ -8,6 +9,8 @@ namespace Tests
         [Test]
         public void TrueIsTrue()
         {
+            var player = new Player();
+            player.BuyChips(1);
             Assert.True(true);
         }
     }
