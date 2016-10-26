@@ -1,6 +1,7 @@
 ﻿using System;
 using Domain;
 using NUnit.Framework;
+using Tests.DSL;
 
 namespace Tests
 {
@@ -13,7 +14,7 @@ namespace Tests
             var player = new Player();
             var game = new RollDiceGame();
 
-            player.Joins(game);
+            player.Join(game);
 
             Assert.True(player.IsInGame);
         }
@@ -38,7 +39,7 @@ namespace Tests
         public void Leave_AfterJoin_IsNotInGame()
         {
             var player = new Player();
-            player.Joins(new RollDiceGame());
+            player.Join(new RollDiceGame());
 
             player.LeaveGame();
 
@@ -49,7 +50,7 @@ namespace Tests
         public void Leave_TwoTimesAfterJoin_ThrowsInvalidOperationException()
         {
             var player = new Player();
-            player.Joins(new RollDiceGame());
+            player.Join(new RollDiceGame());
             player.LeaveGame();
 
             Assert.Catch<InvalidOperationException>(() => player.LeaveGame());
@@ -59,10 +60,10 @@ namespace Tests
         public void JoinAnotherGame_AlreadyInGame_ThrowsInvalidOperationException()
         {
             var player = new Player();
-            player.Joins(new RollDiceGame());
+            player.Join(new RollDiceGame());
 
             Assert.Catch<InvalidOperationException>(() =>
-                    player.Joins(new RollDiceGame()));
+                    player.Join(new RollDiceGame()));
         }
 
         [Test]
@@ -70,10 +71,10 @@ namespace Tests
         {
             var player = new Player();
             var game = new RollDiceGame();
-            player.Joins(game);
+            player.Join(game);
 
             Assert.Catch<InvalidOperationException>(() =>
-                    player.Joins(game));
+                    player.Join(game));
         }
 
         [Test]
@@ -81,10 +82,10 @@ namespace Tests
         {
             var player = new Player();
             var game = new RollDiceGame();
-            player.Joins(game);
+            player.Join(game);
             player.LeaveGame();
 
-            player.Joins(game);
+            player.Join(game);
 
             Assert.True(player.IsInGame);
         }
@@ -93,10 +94,10 @@ namespace Tests
         public void TwoPlayersCanJoinAGame()
         {
             var game = new RollDiceGame();
-            new Player().Joins(game);
+            new Player().Join(game);
             var player = new Player();
 
-            player.Joins(game);
+            player.Join(game);
 
             Assert.True(player.IsInGame);
         }
@@ -104,15 +105,10 @@ namespace Tests
         [Test]
         public void SixPlayersCanJoinAGame()
         {
-            var game = new RollDiceGame();
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
+            var game = Create.Game.With(5.Players());
             var player6 = new Player();
 
-            player6.Joins(game);
+            player6.Join(game);
 
             Assert.True(player6.IsInGame);
         }
@@ -120,16 +116,18 @@ namespace Tests
         [Test]
         public void SeventhPlayerCanNotJoinAGame()
         {
-            var game = new RollDiceGame();
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
-            new Player().Joins(game);
+            RollDiceGame game = Create.Game.With(6.Players());
             var player7 = new Player();
 
-            Assert.Catch<TooManyPlayersException>(() => player7.Joins(game));
+            Assert.Catch<TooManyPlayersException>(() => player7.Join(game));
         }
+
+        [SetUp]
+        public void SetUp()
+        {
+            Create = new Father();
+        }
+
+        public Father Create;
     }
 }

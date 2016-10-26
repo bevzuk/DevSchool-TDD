@@ -4,7 +4,7 @@
     {
         private int playersCount;
 
-        public void IncrementPlayersCount()
+        public void AddPlayer(Player player)
         {
             if (playersCount == 6)
             {
@@ -13,7 +13,7 @@
             playersCount++;
         }
 
-        public void DecrementPlayersCount()
+        public void RemovePlayer(Player player)
         {
             playersCount--;
         }
