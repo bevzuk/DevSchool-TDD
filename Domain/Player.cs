@@ -4,11 +4,17 @@ namespace Domain
 {
     public class Player
     {
-        public bool IsInGame { get; private set; }
+        private RollDiceGame currentGame;
+        public bool IsInGame => currentGame != null;
 
         public void Joins(RollDiceGame game)
         {
-            IsInGame = true;
+            if (IsInGame)
+            {
+                throw new InvalidOperationException();
+            }
+            currentGame = game;
+            currentGame.IncrementPlayersCount();
         }
 
         public void LeaveGame()
@@ -17,7 +23,8 @@ namespace Domain
             {
                 throw new InvalidOperationException();
             }
-            IsInGame = false;
+            currentGame.DecrementPlayersCount();
+            currentGame = null;
         }
     }
 }
