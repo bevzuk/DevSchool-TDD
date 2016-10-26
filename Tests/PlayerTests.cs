@@ -122,6 +122,17 @@ namespace Tests
             Assert.Catch<TooManyPlayersException>(() => player7.Join(game));
         }
 
+        [Test]
+        public void PlayerWith1Chip_CanMake1ChipBet()
+        {
+            var player = new Player();
+            player.Buy(1.Chips());
+
+            player.Bet(new Bet(1.Chips(), 3.Score()));
+            
+            Assert.False(player.Has(1.Chips()));
+        }
+
         [SetUp]
         public void SetUp()
         {

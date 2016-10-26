@@ -48,6 +48,7 @@
     <Compile Include="DSL\Father.cs" />
     <Compile Include="DSL\GameFather.cs" />
     <Compile Include="DSL\IntExtensions.cs" />
+    <Compile Include="PlayerChipsTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

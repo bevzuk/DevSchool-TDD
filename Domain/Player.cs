@@ -29,5 +29,22 @@ namespace Domain
             currentGame.RemovePlayer(this);
             currentGame = null;
         }
+
+        public void Buy(Chip chips)
+        {
+            availableChips = chips;
+        }
+
+        private Chip availableChips = new Chip(0);
+
+        public bool Has(Chip chips)
+        {
+            return availableChips >= chips;
+        }
+
+        public void Bet(Bet bet)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

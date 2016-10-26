@@ -12,5 +12,15 @@ namespace Tests.DSL
                 yield return new Player();
             }
         }
+
+        public static Chip Chips(this int amount)
+        {
+            return new Chip(amount);
+        }
+
+        public static int Score(this int amount)
+        {
+            return amount;
+        }
     }
 }
