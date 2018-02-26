@@ -5,10 +5,7 @@ namespace Domain
     public class Player
     {
         private RollDiceGame currentGame;
-        public bool IsInGame
-        {
-            get { return currentGame != null; }
-        }
+        public bool IsInGame => currentGame != null;
 
         public void Join(RollDiceGame game)
         {
@@ -44,7 +41,20 @@ namespace Domain
 
         public void Bet(Bet bet)
         {
-            throw new NotImplementedException();
+            CurrentBet = bet;
+        }
+
+        public Bet CurrentBet { get; private set; }
+
+        public void Win(int chipsAmount)
+        {
+            availableChips = new Chip(availableChips.Amount + chipsAmount);
+            CurrentBet = null;
+        }
+
+        public void Lose()
+        {
+            CurrentBet = null;
         }
     }
 }

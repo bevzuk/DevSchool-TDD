@@ -1,21 +1,40 @@
-﻿namespace Domain
+﻿using System;
+using System.Collections.Generic;
+
+namespace Domain
 {
     public class RollDiceGame
     {
-        private int playersCount;
+        private List<Player> players = new List<Player>();
 
         public void AddPlayer(Player player)
         {
-            if (playersCount == 6)
+            if (players.Count == 6)
             {
                 throw new TooManyPlayersException();
             }
-            playersCount++;
+            players.Add(player);
         }
 
         public void RemovePlayer(Player player)
         {
-            playersCount--;
+            players.Remove(player);
+        }
+
+        public void Play()
+        {
+            var luckyScore = new Random(DateTime.Now.Millisecond).Next(1, 6);
+            foreach (var player in players)
+            {
+                if (player.CurrentBet.Score == luckyScore)
+                {
+                    player.Win(player.CurrentBet.Chips.Amount * 6);
+                }
+                else
+                {
+                    player.Lose();
+                }
+            }
         }
     }
 }

@@ -2,21 +2,21 @@
 {
     public class Chip
     {
-        private readonly int amount;
+        public int Amount { get; }
 
         public Chip(int amount)
         {
-            this.amount = amount;
+            Amount = amount;
         }
 
         public static bool operator >=(Chip a, Chip b)
         {
-            return a.amount >= b.amount;
+            return a.Amount >= b.Amount;
         }
 
         public static bool operator <=(Chip a, Chip b)
         {
-            return a.amount <= b.amount;
+            return a.Amount <= b.Amount;
         }
     }
 }
